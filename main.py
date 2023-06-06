@@ -47,7 +47,7 @@ class ItemEnterEventListener(EventListener):
             [
                 ExtensionResultItem(
                     icon='images/icon.png',
-                    name="Space",
+                    name=f"{data}",
                     on_enter=HideWindowAction()
                 )
             ]
