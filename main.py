@@ -29,7 +29,7 @@ class KeywordQueryEventListener(EventListener):
             item_name = extension.preferences['item_name']
             data = {'new_name': f'{item_name} {i} was clicked'}
             items.append(
-                    ExtensionResultItem(
+                ExtensionResultItem(
                     icon='images/icon.png',
                     name='%s %s' % (item_name, i),
                     description='Item description %s' % i,
@@ -46,10 +46,12 @@ class ItemEnterEventListener(EventListener):
         return RenderResultListAction(
             [
                 ExtensionResultItem(
-                icon='images/icon.png',
-                name=data['new_name'],
-                on_enter=HideWindowAction())
-            ])
+                    icon='images/icon.png',
+                    name="Space",
+                    on_enter=HideWindowAction()
+                )
+            ]
+        )
 
 
 if __name__ == '__main__':
