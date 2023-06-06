@@ -1,6 +1,8 @@
 import json
 import subprocess
 
-def get_canvas_apps():
+from typing import List, Dict, Any
+
+def get_canvas_apps() -> List[Dict[str, Any]]:
     out = subprocess.check_output(["space", "api", "-X", "GET", "/v0/canvas?limit=999&per_page=999"])
-    return json.loads(out)
+    return json.loads(out)["items"]

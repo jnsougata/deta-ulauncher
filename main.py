@@ -27,25 +27,16 @@ class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
         items = []
         logger.info('preferences %s' % json.dumps(extension.preferences))
-        # apps = get_canvas_apps()
-        items.append(
-            ExtensionResultItem(
-                icon='images/icon.png',
-                name="Debug",
-                description=f"apps ...",
-                on_enter=ExtensionCustomAction("...", keep_app_open=True)
+        apps = get_canvas_apps()
+        for app in apps:
+            items.append(
+                ExtensionResultItem(
+                    icon='images/icon.png',
+                    name=app.get('id'),
+                    description="Open app in browser",
+                    on_enter=ExtensionCustomAction(app, keep_app_open=True)
+                )
             )
-        )
-        # for app in apps:
-        #     items.append(
-        #         ExtensionResultItem(
-        #             icon='images/icon.png',
-        #             name=app.get('id'),
-        #             description="Open app in browser",
-        #             on_enter=ExtensionCustomAction(app, keep_app_open=True)
-        #         )
-        #     )
-        # items = items[:5]
         return RenderResultListAction(items)
 
 
