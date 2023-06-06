@@ -33,7 +33,7 @@ class KeywordQueryEventListener(EventListener):
                 ExtensionResultItem(
                     icon='images/icon.png',
                     name=app['id'],
-                    description=app['item_id'],
+                    description="Open app in browser",
                     on_enter=ExtensionCustomAction(app, keep_app_open=True)
                 )
             )
