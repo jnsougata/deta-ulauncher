@@ -5,14 +5,14 @@
   "developer_name": "Sougata Jana",
   "icon": "images/icon.png",
   "options": {
-    "query_debounce": 0.05
+    "query_debounce": 0.5
   },
   "preferences": [
     {
-      "id": "deta_kw",
+      "id": "space",
       "type": "keyword",
-      "name": "Deta",
-      "default_value": "deta"
+      "name": "Space",
+      "default_value": "space"
     },
     {
       "id": "item_name",

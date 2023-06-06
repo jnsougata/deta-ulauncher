@@ -9,7 +9,7 @@ from ulauncher.api.shared.action.RenderResultListAction import RenderResultListA
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
 from ulauncher.api.shared.action.HideWindowAction import HideWindowAction
 
-from client import get_canvas_apps
+from client import get_actions
 
 logger = logging.getLogger(__name__)
 
@@ -25,34 +25,51 @@ class DetaLauncher(Extension):
 class KeywordQueryEventListener(EventListener):
 
     def on_event(self, event, extension):
-        items = []
-        logger.info('preferences %s' % json.dumps(extension.preferences))
-        apps = get_canvas_apps()
-        for app in apps:
-            items.append(
-                ExtensionResultItem(
-                    icon='images/icon.png',
-                    name=app.get('id'),
-                    description="Open app in browser",
-                    on_enter=ExtensionCustomAction(app, keep_app_open=True)
+        actions = get_actions()
+        results = []
+        name_arg = event.get_argument()
+        if not name_arg:
+            logger.info('preferences %s' % json.dumps(extension.preferences))
+            for action in actions:
+                results.append(
+                    ExtensionResultItem(
+                        icon='images/action.png',
+                        name=action['title'],
+                        description=f'{action["app_name"]}',
+                        on_enter=ExtensionCustomAction(action, keep_app_open=True)
+                    )
                 )
-            )
-        return RenderResultListAction(items)
+        else:
+            for action in actions:
+                if name_arg.lower() in action['app_name'].lower():
+                    results.append(
+                        ExtensionResultItem(
+                            icon='images/action.png',
+                            name=action['title'],
+                            description=f'{action["app_name"]}',
+                            on_enter=ExtensionCustomAction(action, keep_app_open=True)
+                        )
+                    )
+        
+        return RenderResultListAction(results)
+
 
 
 class ItemEnterEventListener(EventListener):
 
     def on_event(self, event, extension):
         data = event.get_data()
-        return RenderResultListAction(
-            [
+        results = []
+        for inp in data['input']:
+            results.append(
                 ExtensionResultItem(
-                    icon='images/icon.png',
-                    name=f"{data}",
-                    on_enter=HideWindowAction()
+                    icon='images/action.png',
+                    name=inp['name'],
+                    description=inp['type'],
+                    on_enter=ExtensionCustomAction(inp, keep_app_open=True)
                 )
-            ]
-        )
+            )
+        return RenderResultListAction(results)
 
 
 if __name__ == '__main__':
