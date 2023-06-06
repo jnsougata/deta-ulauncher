@@ -32,11 +32,12 @@ class KeywordQueryEventListener(EventListener):
             items.append(
                 ExtensionResultItem(
                     icon='images/icon.png',
-                    name=app['id'],
+                    name=app.get('id'),
                     description="Open app in browser",
                     on_enter=ExtensionCustomAction(app, keep_app_open=True)
                 )
             )
+        items = items[:5]
         return RenderResultListAction(items)
 
 
