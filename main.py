@@ -9,6 +9,8 @@ from ulauncher.api.shared.action.RenderResultListAction import RenderResultListA
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
 from ulauncher.api.shared.action.HideWindowAction import HideWindowAction
 
+from client import get_canvas_apps
+
 logger = logging.getLogger(__name__)
 
 
@@ -25,15 +27,14 @@ class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
         items = []
         logger.info('preferences %s' % json.dumps(extension.preferences))
-        for i in range(5):
-            item_name = extension.preferences['item_name']
-            data = {'new_name': f'{item_name} {i} was clicked'}
+        apps = get_canvas_apps()
+        for app in apps:
             items.append(
                 ExtensionResultItem(
                     icon='images/icon.png',
-                    name='%s %s' % (item_name, i),
-                    description='Item description %s' % i,
-                    on_enter=ExtensionCustomAction(data, keep_app_open=True)
+                    name=app['id'],
+                    description=app['item_id'],
+                    on_enter=ExtensionCustomAction(app, keep_app_open=True)
                 )
             )
         return RenderResultListAction(items)
