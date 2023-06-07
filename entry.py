@@ -1,5 +1,4 @@
 import gi
-import threading
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
@@ -8,12 +7,14 @@ from gi.repository import Gtk
 
 class DialogWindow(Gtk.Window):
     def __init__(self, response):
-        super().__init__(title=f'Response')
-        self.set_size_request(400, 100)
+        super().__init__(title=response['title'])
+        self.set_size_request(400, 200)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         label = Gtk.Label()
-        label.set_text(response)
-        label.set_size_request(200, 30)
+        label.set_text(response['message'])
+        label.set_max_width_chars(50)
+        label.set_justify(Gtk.Justification.LEFT)
+        label.set_line_wrap(True)
         vbox.pack_start(label, False, False, 10)
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=2)
         button = Gtk.Button.new_with_label("Close")
@@ -37,6 +38,7 @@ class EntryWindow(Gtk.Window):
         super().__init__(title=f'{data["app_name"]} - {data["title"]}')
         self.set_size_request(400, 100)
         self.timeout_id = None
+        self.data = data
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         for inp in data['input']:
             name = inp['name']
@@ -59,9 +61,15 @@ class EntryWindow(Gtk.Window):
 
 
     def on_submit_clicked(self, button):
-        dialog = DialogWindow("Response")
-        dialog.show_all()
         self.destroy()
+        response = {
+            'title': f'{self.data["app_name"]} - Response',
+            'message': f'{self.data}'
+        }
+        # TODO: Send response to the app and receive the response
+        dialog = DialogWindow(response)
+        dialog.show_all()
+        
 
 
        

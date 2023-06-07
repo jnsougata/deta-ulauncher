@@ -1,4 +1,4 @@
-import os
+import threading
 import json
 import logging
 from time import sleep
@@ -8,7 +8,7 @@ from ulauncher.api.shared.event import KeywordQueryEvent, ItemEnterEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
-from ulauncher.api.shared.action.DoNothingAction import DoNothingAction
+from ulauncher.api.shared.action.HideWindowAction import HideWindowAction
 from client import get_actions
 from entry import EntryWindow
 
@@ -66,7 +66,8 @@ class ItemEnterEventListener(EventListener):
 
         data = event.get_data()
         EntryWindow(data)
-        Gtk.main()
+        threading.Thread(target=Gtk.main).start()
+        return HideWindowAction()
 
 
 if __name__ == '__main__':
