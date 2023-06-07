@@ -10,6 +10,7 @@ class DialogWindow(Gtk.Window):
     def __init__(self, response):
         super().__init__(title=response['title'])
         self.set_size_request(400, 200)
+        self.set_position(Gtk.WindowPosition.CENTER)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         label = Gtk.Label()
         label.set_text(response['message'])
@@ -40,6 +41,7 @@ class EntryWindow(Gtk.Window):
         self.set_size_request(400, 100)
         self.timeout_id = None
         self.data = data
+        self.set_position(Gtk.WindowPosition.CENTER)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         for inp in data['input']:
             name = inp['name']
