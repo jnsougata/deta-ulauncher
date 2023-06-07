@@ -9,8 +9,8 @@ from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
 from ulauncher.api.shared.action.HideWindowAction import HideWindowAction
-from client import get_actions
-from entry import EntryWindow
+from client import get_actions, run_action
+from entry import EntryWindow, DialogWindow
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +65,17 @@ class ItemEnterEventListener(EventListener):
         from gi.repository import Gtk
 
         data = event.get_data()
-        EntryWindow(data)
+        has_input = data.get('input')
+        if has_input:
+            EntryWindow(data)
+            threading.Thread(target=Gtk.main).start()
+        else:
+            resp = run_action(data, None)
+            response = {
+                'title': f'{data["app_name"]} - Response',
+                'message': f'{resp}'
+            }
+            DialogWindow(response)
         threading.Thread(target=Gtk.main).start()
         return HideWindowAction()
 

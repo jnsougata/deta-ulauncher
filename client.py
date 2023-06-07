@@ -9,12 +9,11 @@ def call_cli(method: str, path: str) -> List[Dict[str, Any]]:
 
 def get_canvas_apps() -> List[Dict[str, Any]]:
     return call_cli("GET", "/v0/canvas?limit=999&per_page=999")["items"]
-    return json.loads(out)
 
 def get_actions() -> List[Dict[str, Any]]:
     return call_cli("GET", "/v0/actions?limit=999&per_page=999")["actions"]
 
-def post_action(action: Dict[str, Any], data) -> None:
+def run_action(action: Dict[str, Any], data) -> None:
     instance_alias = action["instance_alias"]
     name = action["name"]
     body = "'{}'".format(json.dumps(data))
