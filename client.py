@@ -17,7 +17,6 @@ def get_actions() -> List[Dict[str, Any]]:
 def post_action(action: Dict[str, Any], data) -> None:
     instance_alias = action["instance_alias"]
     name = action["name"]
-    #call_cli("POST", f"/v0/actions/{instance_id}/{name}", json.dumps(data))
     body = "'{}'".format(json.dumps(data))
     command = "echo {} | space trigger {} {}".format(body, instance_alias, name)
     out = subprocess.check_output(["bash","-c", command])
