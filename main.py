@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 from time import sleep
@@ -7,9 +8,9 @@ from ulauncher.api.shared.event import KeywordQueryEvent, ItemEnterEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
-from ulauncher.api.shared.action.HideWindowAction import HideWindowAction
-
+from ulauncher.api.shared.action.DoNothingAction import DoNothingAction
 from client import get_actions
+from entry import EntryWindow
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +42,7 @@ class KeywordQueryEventListener(EventListener):
                 )
         else:
             for action in actions:
-                if name_arg.lower() in action['app_name'].lower():
+                if name_arg.lower() in action['app_name'].lower() or name_arg.lower() in action['title'].lower():
                     results.append(
                         ExtensionResultItem(
                             icon='images/action.png',
@@ -58,18 +59,14 @@ class KeywordQueryEventListener(EventListener):
 class ItemEnterEventListener(EventListener):
 
     def on_event(self, event, extension):
+        import gi
+
+        gi.require_version("Gtk", "3.0")
+        from gi.repository import Gtk
+
         data = event.get_data()
-        results = []
-        for inp in data['input']:
-            results.append(
-                ExtensionResultItem(
-                    icon='images/action.png',
-                    name=inp['name'],
-                    description=inp['type'],
-                    on_enter=ExtensionCustomAction(inp, keep_app_open=True)
-                )
-            )
-        return RenderResultListAction(results)
+        EntryWindow(data)
+        Gtk.main()
 
 
 if __name__ == '__main__':

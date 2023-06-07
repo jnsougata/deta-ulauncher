@@ -1,7 +1,7 @@
 {
   "required_api_version": "^2.0.0",
-  "name": "Deta",
-  "description": "Deta ulauncher extension",
+  "name": "Space",
+  "description": "Deta Space Application Action Launcher",
   "developer_name": "Sougata Jana",
   "icon": "images/icon.png",
   "options": {
