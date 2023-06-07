@@ -3,7 +3,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-
+from client import post_action
 
 class DialogWindow(Gtk.Window):
     def __init__(self, response):
@@ -61,11 +61,19 @@ class EntryWindow(Gtk.Window):
 
 
     def on_submit_clicked(self, button):
+        # get the values from the input fields
+        body = {}
+        for inp in self.data['input']:
+            name = inp['name']
+            name_as_attr = name.replace(' ', '_')
+            body[name] = getattr(self, name_as_attr).get_text()
         self.destroy()
+        resp = post_action(self.data, body)
         response = {
             'title': f'{self.data["app_name"]} - Response',
-            'message': f'{self.data}'
+            'message': f'{resp}'
         }
+        
         # TODO: Send response to the app and receive the response
         dialog = DialogWindow(response)
         dialog.show_all()

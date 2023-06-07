@@ -1,6 +1,6 @@
 {
   "required_api_version": "^2.0.0",
-  "name": "Space",
+  "name": "Space Actions",
   "description": "Deta Space Application Action Launcher",
   "developer_name": "Sougata Jana",
   "icon": "images/icon.png",
@@ -11,15 +11,8 @@
     {
       "id": "space",
       "type": "keyword",
-      "name": "Space",
+      "name": "Space Actions",
       "default_value": "space"
-    },
-    {
-      "id": "item_name",
-      "type": "input",
-      "name": "Item name",
-      "description": "Name for each item",
-      "default_value": "Item"
     }
   ]
 }
